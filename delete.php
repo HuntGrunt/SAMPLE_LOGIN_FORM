@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+// PETER
 // Check if the form is submitted and user is logged in
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username']) && isset($_SESSION['userData'])) {
     $username = $_POST['username'];
