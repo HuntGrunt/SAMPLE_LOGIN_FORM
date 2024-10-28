@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>News Announcements</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="CSS_glc_home.css">
 </head>
 <body>
-    <h1> STUDENTS CAN SEE HERE THE POSTED NEWS AND ANNOUNCEMENT OF THE ADMIN </h1>
-    <a href="HTML_glc_dashSTUDENT.html" class="back-button">Back</a>
+    <div class="container">
+        <h2>News and Announcements</h2>
+        <ul id="newsList"></ul>
+        <a href="HTML_glc_dashSTUDENT.html" class="back-button">Back</a>
+    </div>
+s
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const newsList = document.getElementById("newsList");
+
+            // Load existing news from localStorage
+            const loadNews = () => {
+                const news = JSON.parse(localStorage.getItem("news")) || [];
+                newsList.innerHTML = news.map(item => `
+                    <li>
+                        <span>${item.text}</span>
+                    </li>
+                `).join("");
+            };
+
+            loadNews(); // Initial load of news
+        });
+    </script>
 
 </body>
 </html>
