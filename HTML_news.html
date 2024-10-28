@@ -3,11 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>News Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel ="stylesheet" href = "CSS_glc_home.css">
+    <style>
+        /* Inline CSS for buttons styling */
+
+    </style>
 </head>
 <body>
-    <h1> ADMIN CAN ADD HERE A NEWS </h1>
-    <a href="HTML_glc_dashADMIN.html" class="back-button">Back</a>
+    <div class="container">
+        <h2>Post News</h2>
+        <form id="newsForm">
+            <textarea id="newsContent" placeholder="Write your news here..." required></textarea>
+            <br>
+            <button type="submit">Post</button>
+        </form>
+        <h2>Your News Posts</h2>
+        <ul id="newsList"></ul>
+        <a href="HTML_glc_dashADMIN.html" class="back-button" target="_blank">Back</a>
+    </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const newsForm = document.getElementById("newsForm");
+            const newsContent = document.getElementById("newsContent");
+            const newsList = document.getElementById("newsList");
+
+            // Load existing news from localStorage
+            const loadNews = () => {
+                const news = JSON.parse(localStorage.getItem("news")) || [];
+                newsList.innerHTML = news.map((item, index) => `
+                    <li class="news-item">
+                        <span class="news-text">${item.text}</span>
+                        <div class="button-group">
+                            <button onclick="editNews(${index})">Edit</button>
+                            <button onclick="deleteNews(${index})">Delete</button>
+                        </div>
+                    </li>
+                `).join("");
+            };
+
+            // Save news to localStorage
+            const saveNews = (news) => {
+                localStorage.setItem("news", JSON.stringify(news));
+                loadNews();
+            };
+
+            // Add news post
+            newsForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                const news = JSON.parse(localStorage.getItem("news")) || [];
+                const newPost = {
+                    text: newsContent.value
+                };
+                news.push(newPost);
+                saveNews(news);
+                newsContent.value = ""; // Clear textarea
+            });
+
+            // Edit news post
+            window.editNews = (index) => {
+                const news = JSON.parse(localStorage.getItem("news")) || [];
+                newsContent.value = news[index].text; // Populate textarea for editing
+                deleteNews(index); // Delete the news after editing
+            };
+
+            // Delete news post
+            window.deleteNews = (index) => {
+                const news = JSON.parse(localStorage.getItem("news")) || [];
+                news.splice(index, 1);
+                saveNews(news);
+            };
+
+            loadNews(); // Initial load of news
+        });
+    </script>
 </body>
 </html>
